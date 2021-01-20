@@ -11,23 +11,17 @@ class LaetusApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text("Laetus"),
+          backgroundColor: Colors.blueGrey,
         ),
         body: Image.asset('assets/images/sample_image.jpg'),
-
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        //   child: Theme.of(context).platform == TargetPlatform.iOS
-        //       ? CupertinoButton(
-        //           onPressed: () {},
-        //           child: Icon(CupertinoIcons.camera),
-        //         )
-        //       : RaisedButton(
-        //           onPressed: () {},
-        //           child: Icon(Icons.camera),
-        //         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: Colors.blueGrey,
+            child: Theme.of(context).platform == TargetPlatform.iOS
+                ? Icon(CupertinoIcons.camera)
+                : Icon(Icons.camera)),
       ),
-      // ),
     );
   }
 }
