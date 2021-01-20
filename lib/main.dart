@@ -73,17 +73,45 @@ class _LaetusAppState extends State<LaetusApp> {
           backgroundColor: Colors.blueGrey,
         ),
         body: Image.asset('assets/images/sample_image.jpg'),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              _imgFromCamera();
-              Navigator.of(context).pop();
-            },
-            backgroundColor: Colors.blueGrey,
-            child: Theme.of(context).platform == TargetPlatform.iOS
-                ? Icon(CupertinoIcons.camera)
-                : Icon(Icons.camera)),
+        bottomNavigationBar: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              FloatingActionButton(
+                onPressed: () {
+                  _imgFromCamera();
+                  Navigator.of(context).pop();
+                },
+                backgroundColor: Colors.blueGrey,
+                child: Theme.of(context).platform == TargetPlatform.iOS
+                    ? Icon(CupertinoIcons.camera)
+                    : Icon(Icons.camera),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  _imgFromCamera();
+                  Navigator.of(context).pop();
+                },
+                backgroundColor: Colors.blueGrey,
+                child: Theme.of(context).platform == TargetPlatform.iOS
+                    ? Icon(CupertinoIcons.camera)
+                    : Icon(Icons.camera),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
+// floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+// floatingActionButton: FloatingActionButton(
+//     onPressed: () {
+//       _imgFromCamera();
+//       Navigator.of(context).pop();
+//     },
+//     backgroundColor: Colors.blueGrey,
+//     child: Theme.of(context).platform == TargetPlatform.iOS
+//         ? Icon(CupertinoIcons.camera)
+//         : Icon(Icons.camera)),
