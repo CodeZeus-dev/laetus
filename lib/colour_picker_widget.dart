@@ -8,6 +8,11 @@ import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart' show rootBundle;
 
 class ColorPickerWidget extends StatefulWidget {
+  // --------------------------------------------------------------------
+  final _imageArg;
+
+  ColorPickerWidget(this._imageArg);
+  // --------------------------------------------------------------------
   @override
   _ColorPickerWidgetState createState() => _ColorPickerWidgetState();
 }
