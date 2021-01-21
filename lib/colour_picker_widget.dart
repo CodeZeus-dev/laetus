@@ -7,18 +7,21 @@ import 'package:flutter/rendering.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'dart:io';
+import 'dart:async';
+
 class ColorPickerWidget extends StatefulWidget {
   // --------------------------------------------------------------------
-  final _imageArg;
+  final _imagePath;
 
-  ColorPickerWidget(this._imageArg);
+  ColorPickerWidget(this._imagePath);
   // --------------------------------------------------------------------
   @override
   _ColorPickerWidgetState createState() => _ColorPickerWidgetState();
 }
 
 class _ColorPickerWidgetState extends State<ColorPickerWidget> {
-  String imagePath = 'assets/images/sample_image.jpg';
+  //String imagePath = 'assets/images/sample_image.jpg'; // default, unused
   GlobalKey imageKey = GlobalKey();
   GlobalKey paintKey = GlobalKey();
 
@@ -40,9 +43,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final String title = useSnapshot ? "snapshot" : "basic";
     return Scaffold(
-      appBar: AppBar(title: Text("Color picker $title")),
       body: StreamBuilder(
           initialData: Colors.green[500],
           stream: _stateController.stream,
@@ -61,7 +62,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
                     },
                     child: Center(
                       child: Image.asset(
-                        imagePath,
+                        widget._imagePath, // changed
                         key: imageKey,
                         //color: Colors.red,
                         //colorBlendMode: BlendMode.hue,
@@ -129,7 +130,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   }
 
   Future<void> loadImageBundleBytes() async {
-    ByteData imageBytes = await rootBundle.load(imagePath);
+    ByteData imageBytes = await rootBundle.load(widget._imagePath); // changed
     setImageBytes(imageBytes);
   }
 
