@@ -61,7 +61,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
                         //color: Colors.red,
                         //colorBlendMode: BlendMode.hue,
                         //alignment: Alignment.bottomRight,
-                        fit: BoxFit.none,
+                        fit: BoxFit.fill,
                         //scale: 1,
                       ),
                     ),
