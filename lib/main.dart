@@ -42,6 +42,18 @@ class _LaetusAppState extends State<LaetusApp> {
     });
   }
 
+  void _screenTouched(dynamic details, ImgDetails img, RenderBox box) {
+    final RenderBox box = context.findRenderObject();
+    double widgetScale = box.size.width / img.width;
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+    var x = (localOffset.dx / widgetScale).round();
+    var y = (localOffset.dy / widgetScale).round();
+    print(img.pixelColorAt(x, y));
+    setState(() {
+      _createDropper(localOffset.dx, box.size.height - localOffset.dy);
+    });
+  }
+
   void _createDropper(left, bottom) {
     dropper = Positioned(
       left: left,
@@ -69,19 +81,13 @@ class _LaetusAppState extends State<LaetusApp> {
                       child: _image == null
                           ? Image(image: sampleImage)
                           : Image.file(_image),
-                      onTap: () {},
+                      onPanUpdate: (DragUpdateDetails details) {
+                        _screenTouched(
+                            details, img, context.findRenderObject());
+                      },
                       onTapDown: (TapDownDetails details) {
-                        final RenderBox box = context.findRenderObject();
-                        double widgetScale = box.size.width / img.width;
-                        final Offset localOffset =
-                            box.globalToLocal(details.globalPosition);
-                        var x = (localOffset.dx / widgetScale).round();
-                        var y = (localOffset.dy / widgetScale).round();
-                        print(img.pixelColorAt(x, y));
-                        setState(() {
-                          _createDropper(
-                              localOffset.dx, box.size.height - localOffset.dy);
-                        });
+                        _screenTouched(
+                            details, img, context.findRenderObject());
                       },
                     );
                   }),
