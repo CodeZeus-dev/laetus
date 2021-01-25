@@ -20,6 +20,9 @@ class _LaetusAppState extends State<LaetusApp> {
   File _image;
   final picker = ImagePicker();
   final AssetImage sampleImage = AssetImage('assets/images/sample_image.jpeg');
+  Positioned dropper = Positioned(
+    child: Container(width: 0.0, height: 0.0),
+  );
 
   Future _getImage(camOrGal) async {
     ImageSource source;
@@ -39,6 +42,14 @@ class _LaetusAppState extends State<LaetusApp> {
     });
   }
 
+  void _createDropper(left, bottom) {
+    dropper = Positioned(
+      left: left,
+      bottom: bottom,
+      child: Text('This is where you touched me', textScaleFactor: 2.0),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,25 +59,35 @@ class _LaetusAppState extends State<LaetusApp> {
           backgroundColor: Colors.blueGrey,
         ),
         body: Center(
-          child: ImagePixels(
-              imageProvider: _image == null ? sampleImage : FileImage(_image),
-              builder: (BuildContext context, ImgDetails img) {
-                return GestureDetector(
-                  child: _image == null
-                      ? Image(image: sampleImage)
-                      : Image.file(_image),
-                  onTap: () {},
-                  onTapDown: (TapDownDetails details) {
-                    final RenderBox box = context.findRenderObject();
-                    double widgetScale = box.size.width / img.width;
-                    final Offset localOffset =
-                        box.globalToLocal(details.globalPosition);
-                    var x = (localOffset.dx / widgetScale).round();
-                    var y = (localOffset.dy / widgetScale).round();
-                    print(img.pixelColorAt(x, y));
-                  },
-                );
-              }),
+          child: Stack(
+            children: <Widget>[
+              ImagePixels(
+                  imageProvider:
+                      _image == null ? sampleImage : FileImage(_image),
+                  builder: (BuildContext context, ImgDetails img) {
+                    return GestureDetector(
+                      child: _image == null
+                          ? Image(image: sampleImage)
+                          : Image.file(_image),
+                      onTap: () {},
+                      onTapDown: (TapDownDetails details) {
+                        final RenderBox box = context.findRenderObject();
+                        double widgetScale = box.size.width / img.width;
+                        final Offset localOffset =
+                            box.globalToLocal(details.globalPosition);
+                        var x = (localOffset.dx / widgetScale).round();
+                        var y = (localOffset.dy / widgetScale).round();
+                        print(img.pixelColorAt(x, y));
+                        setState(() {
+                          _createDropper(
+                              localOffset.dx, box.size.height - localOffset.dy);
+                        });
+                      },
+                    );
+                  }),
+              dropper
+            ],
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Builder(
