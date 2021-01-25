@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:image_picker/image_picker.dart';
-import './colour_picker_widget.dart';
+import 'package:image_pixels/image_pixels.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -17,8 +17,9 @@ class LaetusApp extends StatefulWidget {
 }
 
 class _LaetusAppState extends State<LaetusApp> {
-  String _imagePath;
+  File _image;
   final picker = ImagePicker();
+  final AssetImage sampleImage = AssetImage('assets/images/sample_image.jpeg');
 
   Future _getImage(camOrGal) async {
     ImageSource source;
@@ -31,7 +32,7 @@ class _LaetusAppState extends State<LaetusApp> {
 
     setState(() {
       if (pickedFile != null) {
-        _imagePath = pickedFile.path;
+        _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
@@ -47,11 +48,25 @@ class _LaetusAppState extends State<LaetusApp> {
           backgroundColor: Colors.blueGrey,
         ),
         body: Center(
-          child: _imagePath == null
-              // --------------------------------------------------------------------
-              ? ColorPickerWidget('assets/images/sample_image.jpg')
-              : ColorPickerWidget(_imagePath),
-          // --------------------------------------------------------------------
+          child: ImagePixels(
+              imageProvider: _image == null ? sampleImage : FileImage(_image),
+              builder: (BuildContext context, ImgDetails img) {
+                return GestureDetector(
+                  child: _image == null
+                      ? Image(image: sampleImage)
+                      : Image.file(_image),
+                  onTap: () {},
+                  onTapDown: (TapDownDetails details) {
+                    final RenderBox box = context.findRenderObject();
+                    double widgetScale = box.size.width / img.width;
+                    final Offset localOffset =
+                        box.globalToLocal(details.globalPosition);
+                    var x = (localOffset.dx / widgetScale).round();
+                    var y = (localOffset.dy / widgetScale).round();
+                    print(img.pixelColorAt(x, y));
+                  },
+                );
+              }),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Builder(
@@ -80,14 +95,8 @@ class _LaetusAppState extends State<LaetusApp> {
                                 leading: Icon(Icons.photo_library),
                                 title: Text('Gallery'),
                                 onTap: () {
-                                  // --------------------------------------------------------------------
-                                  setState(
-                                    () {
-                                      _getImage('gallery');
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                  // --------------------------------------------------------------------
+                                  _getImage('gallery');
+                                  Navigator.pop(context);
                                 },
                               ),
                               ListTile(
