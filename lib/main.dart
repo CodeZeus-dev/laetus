@@ -49,18 +49,26 @@ class _LaetusAppState extends State<LaetusApp> {
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     var x = (localOffset.dx / widgetScale).round();
     var y = (localOffset.dy / widgetScale).round();
-    print(img.pixelColorAt(x, y));
+    print(img.pixelColorAt(x, y)); // to be deleted eventually
+    // flipped in x logic
+    bool flippedX =
+        box.size.width - localOffset.dx < 60; // NB magic number to be removed
+    // flipped in y logic
+    bool flippedY = localOffset.dy < 85; // NB magic number to be removed
+    print('The value of flippedX in the _screenTouched method is: $flippedX');
+    print('The value of flippedY in the _screenTouched method is: $flippedY');
     setState(() {
       _createDropper(localOffset.dx, box.size.height - localOffset.dy,
-          img.pixelColorAt(x, y));
+          img.pixelColorAt(x, y), flippedX, flippedY);
     });
   }
 
-  void _createDropper(left, bottom, Color colour) {
+  void _createDropper(
+      left, bottom, Color colour, bool flippedX, bool flippedY) {
     dropper = Positioned(
       left: left,
       bottom: bottom,
-      child: Dropper(colour),
+      child: Dropper(colour, flippedX, flippedY),
     );
   }
 
