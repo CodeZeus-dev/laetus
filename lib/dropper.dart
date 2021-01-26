@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Dropper extends StatelessWidget {
+  static double totalWidth = 60.0;
+  static double totalHeight = 85.0;
+  final double boxSize = 40.0;
+
   final Color colour;
   final bool flippedX;
   final bool flippedY;
@@ -17,10 +21,10 @@ class Dropper extends StatelessWidget {
         ..rotateY((flippedX ? 180 : 0) / 180 * pi)
         ..rotateX((flippedY ? 180 : 0) / 180 * pi),
       child: Transform.translate(
-        offset: flippedY ? const Offset(0.0, -170.0) : const Offset(0.0, 0.0),
+        offset: flippedY ? Offset(0.0, -2 * totalHeight) : Offset(0.0, 0.0),
         child: Container(
-          width: 60,
-          height: 85,
+          width: totalWidth,
+          height: totalHeight,
           child: Stack(
             children: <Widget>[
               Positioned(
@@ -37,8 +41,8 @@ class Dropper extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: Container(
-                  width: 40.0,
-                  height: 40.0,
+                  width: boxSize,
+                  height: boxSize,
                   decoration: BoxDecoration(
                     color: colour,
                     borderRadius: BorderRadius.circular(12),

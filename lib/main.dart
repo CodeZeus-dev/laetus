@@ -13,7 +13,6 @@ void main() => runApp(LaetusApp());
 class LaetusApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _LaetusAppState();
   }
 }
@@ -49,9 +48,8 @@ class _LaetusAppState extends State<LaetusApp> {
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     var x = (localOffset.dx / widgetScale).round();
     var y = (localOffset.dy / widgetScale).round();
-    bool flippedX =
-        box.size.width - localOffset.dx < 60; // NB magic number to be removed
-    bool flippedY = localOffset.dy < 85; // NB magic number to be removed
+    bool flippedX = box.size.width - localOffset.dx < Dropper.totalWidth;
+    bool flippedY = localOffset.dy < Dropper.totalHeight;
     if (box.size.height - localOffset.dy > 0 && localOffset.dy > 0) {
       setState(() {
         _createDropper(localOffset.dx, box.size.height - localOffset.dy,
