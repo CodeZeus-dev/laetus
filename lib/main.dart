@@ -6,12 +6,13 @@ import 'package:image_pixels/image_pixels.dart';
 import 'dart:io';
 import 'dart:async';
 
+import './dropper.dart';
+
 void main() => runApp(LaetusApp());
 
 class LaetusApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _LaetusAppState();
   }
 }
@@ -20,6 +21,9 @@ class _LaetusAppState extends State<LaetusApp> {
   File _image;
   final picker = ImagePicker();
   final AssetImage sampleImage = AssetImage('assets/images/sample_image.jpeg');
+  Positioned dropper = Positioned(
+    child: Container(width: 0.0, height: 0.0),
+  );
 
   Future _getImage(camOrGal) async {
     ImageSource source;
@@ -39,6 +43,30 @@ class _LaetusAppState extends State<LaetusApp> {
     });
   }
 
+  void _screenTouched(dynamic details, ImgDetails img, RenderBox box) {
+    double widgetScale = box.size.width / img.width;
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+    var x = (localOffset.dx / widgetScale).round();
+    var y = (localOffset.dy / widgetScale).round();
+    bool flippedX = box.size.width - localOffset.dx < Dropper.totalWidth;
+    bool flippedY = localOffset.dy < Dropper.totalHeight;
+    if (box.size.height - localOffset.dy > 0 && localOffset.dy > 0) {
+      setState(() {
+        _createDropper(localOffset.dx, box.size.height - localOffset.dy,
+            img.pixelColorAt(x, y), flippedX, flippedY);
+      });
+    }
+  }
+
+  void _createDropper(
+      left, bottom, Color colour, bool flippedX, bool flippedY) {
+    dropper = Positioned(
+      left: left,
+      bottom: bottom,
+      child: Dropper(colour, flippedX, flippedY),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,25 +76,29 @@ class _LaetusAppState extends State<LaetusApp> {
           backgroundColor: Colors.blueGrey,
         ),
         body: Center(
-          child: ImagePixels(
-              imageProvider: _image == null ? sampleImage : FileImage(_image),
-              builder: (BuildContext context, ImgDetails img) {
-                return GestureDetector(
-                  child: _image == null
-                      ? Image(image: sampleImage)
-                      : Image.file(_image),
-                  onTap: () {},
-                  onTapDown: (TapDownDetails details) {
-                    final RenderBox box = context.findRenderObject();
-                    double widgetScale = box.size.width / img.width;
-                    final Offset localOffset =
-                        box.globalToLocal(details.globalPosition);
-                    var x = (localOffset.dx / widgetScale).round();
-                    var y = (localOffset.dy / widgetScale).round();
-                    print(img.pixelColorAt(x, y));
-                  },
-                );
-              }),
+          child: Stack(
+            children: <Widget>[
+              ImagePixels(
+                  imageProvider:
+                      _image == null ? sampleImage : FileImage(_image),
+                  builder: (BuildContext context, ImgDetails img) {
+                    return GestureDetector(
+                      child: _image == null
+                          ? Image(image: sampleImage)
+                          : Image.file(_image),
+                      onPanUpdate: (DragUpdateDetails details) {
+                        _screenTouched(
+                            details, img, context.findRenderObject());
+                      },
+                      onTapDown: (TapDownDetails details) {
+                        _screenTouched(
+                            details, img, context.findRenderObject());
+                      },
+                    );
+                  }),
+              dropper
+            ],
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Builder(
