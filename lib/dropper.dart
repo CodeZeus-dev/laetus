@@ -10,7 +10,7 @@ class Dropper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Transform(
-      transform: Matrix4.identity()..rotateX(180 / 180 * pi),
+      transform: Matrix4.identity()..rotateX(0 / 180 * pi),
       child: Container(
         width: 60,
         height: 85,
