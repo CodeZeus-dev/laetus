@@ -6,6 +6,8 @@ import 'package:image_pixels/image_pixels.dart';
 import 'dart:io';
 import 'dart:async';
 
+import './dropper.dart';
+
 void main() => runApp(LaetusApp());
 
 class LaetusApp extends StatefulWidget {
@@ -49,15 +51,16 @@ class _LaetusAppState extends State<LaetusApp> {
     var y = (localOffset.dy / widgetScale).round();
     print(img.pixelColorAt(x, y));
     setState(() {
-      _createDropper(localOffset.dx, box.size.height - localOffset.dy);
+      _createDropper(localOffset.dx, box.size.height - localOffset.dy,
+          img.pixelColorAt(x, y));
     });
   }
 
-  void _createDropper(left, bottom) {
+  void _createDropper(left, bottom, Color colour) {
     dropper = Positioned(
       left: left,
       bottom: bottom,
-      child: Text('This is where you touched me', textScaleFactor: 2.0),
+      child: Dropper(colour),
     );
   }
 
