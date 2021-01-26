@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:async';
 
 import './dropper.dart';
+import './coloured_button.dart';
 
 void main() => runApp(LaetusApp());
 
@@ -24,6 +25,7 @@ class _LaetusAppState extends State<LaetusApp> {
   Positioned dropper = Positioned(
     child: Container(width: 0.0, height: 0.0),
   );
+  ColouredButton colouredButton = ColouredButton(Color(0xffff0000));
 
   Future _getImage(camOrGal) async {
     ImageSource source;
@@ -100,50 +102,52 @@ class _LaetusAppState extends State<LaetusApp> {
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Builder(
-          builder: (context) => FloatingActionButton(
-              child: Theme.of(context).platform == TargetPlatform.iOS
-                  ? Icon(CupertinoIcons.camera)
-                  : Icon(Icons.add_a_photo),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        color: Color(0xFF737373),
-                        child: Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).canvasColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+        bottomNavigationBar: Row(
+          children: <Widget>[
+            FloatingActionButton(
+                child: Theme.of(context).platform == TargetPlatform.iOS
+                    ? Icon(CupertinoIcons.camera)
+                    : Icon(Icons.add_a_photo),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          color: Color(0xFF737373),
+                          child: Container(
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  leading: Icon(Icons.photo_library),
+                                  title: Text('Gallery'),
+                                  onTap: () {
+                                    _getImage('gallery');
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                    leading: Icon(Icons.photo_camera),
+                                    title: Text('Camera'),
+                                    onTap: () {
+                                      _getImage('camera');
+                                      Navigator.pop(context);
+                                    }),
+                              ],
                             ),
                           ),
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.photo_library),
-                                title: Text('Gallery'),
-                                onTap: () {
-                                  _getImage('gallery');
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                  leading: Icon(Icons.photo_camera),
-                                  title: Text('Camera'),
-                                  onTap: () {
-                                    _getImage('camera');
-                                    Navigator.pop(context);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
-              }),
+                        );
+                      });
+                }),
+            colouredButton,
+          ],
         ),
       ),
     );
