@@ -43,7 +43,6 @@ class _LaetusAppState extends State<LaetusApp> {
   }
 
   void _screenTouched(dynamic details, ImgDetails img, RenderBox box) {
-    final RenderBox box = context.findRenderObject();
     double widgetScale = box.size.width / img.width;
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     var x = (localOffset.dx / widgetScale).round();
