@@ -32,7 +32,7 @@ class Dropper extends StatelessWidget {
                 left: 0,
                 child: Container(
                   child: Image.asset(
-                    'assets/images/dropper.jpeg',
+                    'assets/images/dropper_thick.jpeg',
                     scale: 7.0,
                   ),
                 ),
@@ -46,6 +46,7 @@ class Dropper extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: colour,
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black),
                   ),
                 ),
               ),
