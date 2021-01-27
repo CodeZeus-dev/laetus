@@ -56,6 +56,7 @@ class _LaetusAppState extends State<LaetusApp> {
       setState(() {
         _createDropper(localOffset.dx, box.size.height - localOffset.dy,
             img.pixelColorAt(x, y), flippedX, flippedY);
+        _updateButton(img.pixelColorAt(x, y));
       });
     }
   }
@@ -67,6 +68,10 @@ class _LaetusAppState extends State<LaetusApp> {
       bottom: bottom,
       child: Dropper(colour, flippedX, flippedY),
     );
+  }
+
+  void _updateButton(Color colour) {
+    colouredButton = ColouredButton(colour);
   }
 
   @override
@@ -102,50 +107,53 @@ class _LaetusAppState extends State<LaetusApp> {
             ],
           ),
         ),
-        bottomNavigationBar: Row(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Row(
           children: <Widget>[
-            FloatingActionButton(
-                child: Theme.of(context).platform == TargetPlatform.iOS
-                    ? Icon(CupertinoIcons.camera)
-                    : Icon(Icons.add_a_photo),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          color: Color(0xFF737373),
-                          child: Container(
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).canvasColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
+            Builder(
+              builder: (context) => FloatingActionButton(
+                  child: Theme.of(context).platform == TargetPlatform.iOS
+                      ? Icon(CupertinoIcons.camera)
+                      : Icon(Icons.add_a_photo),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            color: Color(0xFF737373),
+                            child: Container(
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).canvasColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Icon(Icons.photo_library),
+                                    title: Text('Gallery'),
+                                    onTap: () {
+                                      _getImage('gallery');
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                      leading: Icon(Icons.photo_camera),
+                                      title: Text('Camera'),
+                                      onTap: () {
+                                        _getImage('camera');
+                                        Navigator.pop(context);
+                                      }),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  leading: Icon(Icons.photo_library),
-                                  title: Text('Gallery'),
-                                  onTap: () {
-                                    _getImage('gallery');
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                ListTile(
-                                    leading: Icon(Icons.photo_camera),
-                                    title: Text('Camera'),
-                                    onTap: () {
-                                      _getImage('camera');
-                                      Navigator.pop(context);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                }),
+                          );
+                        });
+                  }),
+            ),
             colouredButton,
           ],
         ),
