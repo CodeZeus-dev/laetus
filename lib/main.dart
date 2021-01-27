@@ -24,6 +24,7 @@ class _LaetusAppState extends State<LaetusApp> {
   Positioned dropper = Positioned(
     child: Container(width: 0.0, height: 0.0),
   );
+  Color currentSelection;
 
   Future _getImage(camOrGal) async {
     ImageSource source;
@@ -51,6 +52,7 @@ class _LaetusAppState extends State<LaetusApp> {
     bool flippedX = box.size.width - localOffset.dx < Dropper.totalWidth;
     bool flippedY = localOffset.dy < Dropper.totalHeight;
     if (box.size.height - localOffset.dy > 0 && localOffset.dy > 0) {
+      currentSelection = img.pixelColorAt(x, y);
       setState(() {
         _createDropper(localOffset.dx, box.size.height - localOffset.dy,
             img.pixelColorAt(x, y), flippedX, flippedY);
@@ -101,49 +103,72 @@ class _LaetusAppState extends State<LaetusApp> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Builder(
-          builder: (context) => FloatingActionButton(
-              child: Theme.of(context).platform == TargetPlatform.iOS
-                  ? Icon(CupertinoIcons.camera)
-                  : Icon(Icons.add_a_photo),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        color: Color(0xFF737373),
-                        child: Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).canvasColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.photo_library),
-                                title: Text('Gallery'),
-                                onTap: () {
-                                  _getImage('gallery');
-                                  Navigator.pop(context);
-                                },
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FloatingActionButton(
+              elevation: 0.0,
+              backgroundColor: Colors.transparent,
+              child: Container(),
+              onPressed: () => {},
+            ),
+            Builder(
+              builder: (context) => FloatingActionButton(
+                  child: Theme.of(context).platform == TargetPlatform.iOS
+                      ? Icon(CupertinoIcons.camera)
+                      : Icon(Icons.add_a_photo),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            color: Color(0xFF737373),
+                            child: Container(
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).canvasColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
                               ),
-                              ListTile(
-                                  leading: Icon(Icons.photo_camera),
-                                  title: Text('Camera'),
-                                  onTap: () {
-                                    _getImage('camera');
-                                    Navigator.pop(context);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
-              }),
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Icon(Icons.photo_library),
+                                    title: Text('Gallery'),
+                                    onTap: () {
+                                      _getImage('gallery');
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                      leading: Icon(Icons.photo_camera),
+                                      title: Text('Camera'),
+                                      onTap: () {
+                                        _getImage('camera');
+                                        Navigator.pop(context);
+                                      }),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  }),
+            ),
+            FloatingActionButton(
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/dropper_white_transparent_background.jpeg',
+                    scale: 8.5,
+                  ),
+                ),
+                onPressed: () {
+                  if (currentSelection != null) {
+                    print("the currently selected colour is $currentSelection");
+                  }
+                }),
+          ],
         ),
       ),
     );
