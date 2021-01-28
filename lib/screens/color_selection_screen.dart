@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:async';
 
 import './color_details_screen.dart';
+import '../extract_arguments.dart';
 import '../dropper.dart';
 
 class ColorSelectionScreen extends StatefulWidget {
@@ -37,8 +38,10 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        print("Image value: $_image");
       } else {
-        print('No image selected.');
+        print(
+            'No image selected - if you\'re seeing this something is really wrong');
       }
     });
   }
@@ -102,6 +105,7 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           FloatingActionButton(
+            heroTag: "hiddenButton",
             elevation: 0.0,
             backgroundColor: Colors.transparent,
             child: Container(),
@@ -109,6 +113,7 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
           ),
           Builder(
             builder: (context) => FloatingActionButton(
+                heroTag: "addPhotoButton",
                 child: Theme.of(context).platform == TargetPlatform.iOS
                     ? Icon(CupertinoIcons.camera)
                     : Icon(Icons.add_a_photo),
@@ -152,6 +157,7 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
                 }),
           ),
           FloatingActionButton(
+              heroTag: "colorDetailsButton",
               child: Center(
                 child: Image.asset(
                   'assets/images/dropper_white_transparent_background.jpeg',
@@ -159,13 +165,13 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
                 ),
               ),
               onPressed: () {
-                if (currentSelection != null) {
+                print("Image value: $_image");
+                if (currentSelection != null && _image != null) {
                   Navigator.pushNamed(
                     context,
                     ColorDetailsScreen.routeName,
-                    arguments: ColorDetailsScreen(
-                        userImage: FileImage(_image),
-                        userColor: currentSelection),
+                    arguments:
+                        ExtractArguments(FileImage(_image), currentSelection),
                   );
                 }
               }),

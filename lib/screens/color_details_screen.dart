@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:color_thief_flutter/color_thief_flutter.dart';
 
 import '../helpers/color_shift.dart';
 import '../helpers/color_retriever.dart';
 import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
+import '../extract_arguments.dart';
 
 class ColorDetailsScreen extends StatefulWidget {
   static const routeName = '/color/details';
-  final dynamic userImage;
-  final Color userColor;
-
-  ColorDetailsScreen({this.userImage, this.userColor});
 
   @override
   _ColorDetailsScreenState createState() => _ColorDetailsScreenState();
 }
 
 class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
-  Color _currentColour = widget.userColor;
+  Color _currentColour;
   Color _changingColour;
   var imageColorInfo;
 
@@ -29,10 +24,10 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   var _colour;
 
   @override
-  void initState() {
-    super.initState();
-    getColour(colourHex: colourToHex(widget.userColor.toString()))
-        .then((colour) {
+  Widget build(BuildContext context) {
+    final ExtractArguments args = ModalRoute.of(context).settings.arguments;
+
+    getColour(colourHex: colourToHex(args.userColor.toString())).then((colour) {
       _currentColour = Color.fromRGBO(
           colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
       _changingColour = Color.fromRGBO(
@@ -40,15 +35,12 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
       _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
       _currentSliderValue = 100;
 
-      setState(() {
-        _colour = colour;
-      });
+      if (_colour != colour) {
+        setState(() {
+          _colour = colour;
+        });
+      }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorDetailsScreen args = ModalRoute.of(context).settings.arguments;
 
     if (_colour == null) {
       return Scaffold(
@@ -393,7 +385,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
               ),
               ColourComplimentScreen(
                 oriColor: _changingColour,
-                assetImage: widget.userImage,
+                assetImage: args.userImage,
               ),
             ],
           ),
