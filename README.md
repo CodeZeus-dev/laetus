@@ -55,10 +55,21 @@ https://docs.google.com/document/d/1RnOr0awjc4LpD98YUPErnUY3cdRZxF7SqVAu1hc9D5I/
 
 ## Designs
 
-### Laetus launch View
+### Launch View
 
-![laetus](https://user-images.githubusercontent.com/71923215/106179949-98686f80-6193-11eb-835e-709553ad6a7f.png)
+<img width="250" height="550" src="https://user-images.githubusercontent.com/71923215/106180530-51c74500-6194-11eb-83c3-83e5191eaaca.png">
 
+### Home Views
+
+<img width="250" height="550" src="https://user-images.githubusercontent.com/71923215/106181735-d797c000-6195-11eb-95cf-882270ea8e95.jpeg">
+
+<img width="250" height="550" src="https://user-images.githubusercontent.com/71923215/106181765-e2525500-6195-11eb-8320-b4e093cd3c68.png">
+
+### Colour Details Views
+
+<img width="250" height+"550" src="https://user-images.githubusercontent.com/71923215/106181365-6a842a80-6195-11eb-925c-4cd541bd1d54.png">
+
+<img width="250" height="550" src="https://user-images.githubusercontent.com/71923215/106181386-707a0b80-6195-11eb-902e-c8553f8d78fd.png">
 
 
 
