@@ -43,9 +43,22 @@ https://docs.google.com/document/d/1RnOr0awjc4LpD98YUPErnUY3cdRZxF7SqVAu1hc9D5I/
 
 ## Diagrams
 
-## Loading Image From Camera/Gallery
+### Loading Image From Camera/Gallery
 
 ![Screenshot 2021-01-22 at 11 55 38](https://user-images.githubusercontent.com/71923215/106179011-5c80da80-6192-11eb-8e71-7e1befee0f07.png)
+
+
+### Home Screen Widget Tree
+
+<img width="408" alt="Screenshot 2021-01-22 at 12 43 17" src="https://user-images.githubusercontent.com/71923215/106179484-02344980-6193-11eb-8449-d5d618f03224.png">
+
+
+## Designs
+
+### Laetus launch View
+
+![laetus](https://user-images.githubusercontent.com/71923215/106179949-98686f80-6193-11eb-835e-709553ad6a7f.png)
+
 
 
 
