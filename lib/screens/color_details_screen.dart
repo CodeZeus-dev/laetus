@@ -8,17 +8,18 @@ import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
 
 class ColorDetailsScreen extends StatefulWidget {
+  static const routeName = '/color/details';
   final dynamic userImage;
   final Color userColor;
 
-  ColorDetailsScreen({@required this.userImage, @required this.userColor});
+  ColorDetailsScreen({this.userImage, this.userColor});
 
   @override
   _ColorDetailsScreenState createState() => _ColorDetailsScreenState();
 }
 
 class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
-  Color _currentColour;
+  Color _currentColour = widget.userColor;
   Color _changingColour;
   var imageColorInfo;
 
@@ -37,7 +38,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
       _changingColour = Color.fromRGBO(
           colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
       _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
-      _currentSliderValue = 100;
+      _currentSliderValue = 100;Í
 
       setState(() {
         _colour = colour;
@@ -47,6 +48,8 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorDetailsScreen args = ModalRoute.of(context).settings.arguments;
+
     if (_colour == null) {
       return Scaffold(
         body: Center(
