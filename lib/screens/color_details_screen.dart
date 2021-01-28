@@ -38,7 +38,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
       _changingColour = Color.fromRGBO(
           colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
       _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
-      _currentSliderValue = 100;Í
+      _currentSliderValue = 100;
 
       setState(() {
         _colour = colour;
