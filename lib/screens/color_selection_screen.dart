@@ -85,24 +85,21 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
       body: Center(
         child: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 60.0),
-              child: ImagePixels(
-                  imageProvider: _image == null ? sampleImage : FileImage(_image),
-                  builder: (BuildContext context, ImgDetails img) {
-                    return GestureDetector(
-                      child: _image == null
-                          ? Image(image: sampleImage)
-                          : Image.file(_image),
-                      onPanUpdate: (DragUpdateDetails details) {
-                        _screenTouched(details, img, context.findRenderObject());
-                      },
-                      onTapDown: (TapDownDetails details) {
-                        _screenTouched(details, img, context.findRenderObject());
-                      },
-                    );
-                  }),
-            ),
+            ImagePixels(
+                imageProvider: _image == null ? sampleImage : FileImage(_image),
+                builder: (BuildContext context, ImgDetails img) {
+                  return GestureDetector(
+                    child: _image == null
+                        ? Image(image: sampleImage)
+                        : Image.file(_image),
+                    onPanUpdate: (DragUpdateDetails details) {
+                      _screenTouched(details, img, context.findRenderObject());
+                    },
+                    onTapDown: (TapDownDetails details) {
+                      _screenTouched(details, img, context.findRenderObject());
+                    },
+                  );
+                }),
             dropper
           ],
         ),

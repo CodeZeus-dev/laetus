@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/color_converter.dart';
 import '../helpers/color_shift.dart';
 import '../helpers/color_retriever.dart';
 import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
 import '../extract_arguments.dart';
+import '../helpers/rgb_calc.dart';
+import '../helpers/cmyk_calc.dart';
 
 class ColorDetailsScreen extends StatefulWidget {
   static const routeName = '/color/details';
@@ -15,33 +18,49 @@ class ColorDetailsScreen extends StatefulWidget {
 
 class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   Color _currentColour;
+  Color _similarColour;
   Color _changingColour;
   var imageColorInfo;
 
   double _currentSliderValue;
+  double _currentSliderSimilarValue;
   Map<String, dynamic> _updatedColour;
+  List<dynamic> _updatedColourCMYK;
 
   var _colour;
+  var count = 0;
 
   @override
   Widget build(BuildContext context) {
     final ExtractArguments args = ModalRoute.of(context).settings.arguments;
 
-    getColour(colourHex: colourToHex(args.userColor.toString())).then((colour) {
-      _currentColour = Color.fromRGBO(
-          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-      _changingColour = Color.fromRGBO(
-          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-      _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
-      _currentSliderValue = 100;
+    if (count < 1) {
+      getColour(colourHex: colourToHex(args.userColor.toString()))
+          .then((colour) {
+        _currentColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
+        _changingColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
+        _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
+        _currentSliderValue = 100;
+        _currentSliderSimilarValue = 0;
+        _updatedColourCMYK = [
+          colour['cmyk']['c'],
+          colour['cmyk']['m'],
+          colour['cmyk']['y'],
+          colour['cmyk']['k']
+        ];
+        _similarColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
 
-      if (_colour != colour) {
-        setState(() {
-          _colour = colour;
-        });
-      }
-    });
-
+        if (_colour != colour) {
+          setState(() {
+            _colour = colour;
+            count++;
+          });
+        }
+      });
+    }
     if (_colour == null) {
       return Scaffold(
         body: Center(
@@ -172,25 +191,25 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             Column(
                               children: <Widget>[
                                 Text(
-                                  _colour['cmyk']['c'].toString(),
+                                  _updatedColourCMYK[0].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['m'].toString(),
+                                  _updatedColourCMYK[1].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['y'].toString(),
+                                  _updatedColourCMYK[2].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['k'].toString(),
+                                  _updatedColourCMYK[3].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -251,19 +270,20 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             Column(
                               children: <Widget>[
                                 Text(
-                                  _colour['rgb']['r'].toString(),
+                                  _updatedColour['r'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['rgb']['g'].toString(),
+                                  _updatedColour['g'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['rgb']['b'].toString(),
+                                  // _colour['rgb']['b'].toString(),
+                                  _updatedColour['b'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -303,7 +323,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                           min: 1,
                           max: 100,
                           divisions: 1000,
-                          label: 'Text',
+                          label: '#${_changingColour.value.toRadixString(16)}',
                           activeColor: _changingColour,
                           onChanged: (double value) {
                             setState(() {
@@ -339,26 +359,31 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                       height: 65,
                       child: Theme(
                         child: Slider(
-                          value: _currentSliderValue,
-                          min: 1,
-                          max: 100,
-                          divisions: 1000,
-                          label: 'Text',
+                          value: _currentSliderSimilarValue,
+                          min: -60,
+                          max: 60,
+                          divisions: 82,
+                          label: _changingColour.toString(),
                           activeColor: _changingColour,
                           onChanged: (double value) {
                             setState(() {
-                              _currentSliderValue = value;
-                              _updatedColour = shiftColor(
+                              _currentSliderSimilarValue = value;
+                              _updatedColour = changeColour(
                                   a: 1.0,
                                   r: _colour['rgb']['r'],
                                   g: _colour['rgb']['g'],
                                   b: _colour['rgb']['b'],
-                                  shiftValue: _currentSliderValue);
+                                  currentSlideValue:
+                                      _currentSliderSimilarValue);
                               _changingColour = Color.fromRGBO(
                                   _updatedColour['r'],
                                   _updatedColour['g'],
                                   _updatedColour['b'],
                                   _updatedColour['a']);
+                              _updatedColourCMYK = convertToCmyk(
+                                  _updatedColour['r'],
+                                  _updatedColour['g'],
+                                  _updatedColour['b']);
                             });
                           },
                         ),
@@ -376,7 +401,23 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             setState(() {
                               _changingColour = _currentColour;
                               _currentSliderValue = 100;
-                              _updatedColour['a'] = 1;
+                              _currentSliderSimilarValue = 0;
+                              _currentColour = Color.fromRGBO(
+                                  _colour['rgb']['r'],
+                                  _colour['rgb']['g'],
+                                  _colour['rgb']['b'],
+                                  1);
+                              _changingColour = Color.fromRGBO(
+                                  _colour['rgb']['r'],
+                                  _colour['rgb']['g'],
+                                  _colour['rgb']['b'],
+                                  1);
+                              _updatedColour = {
+                                'r': 0,
+                                'g': 0,
+                                'b': 255,
+                                'a': 1.0
+                              };
                             });
                           },
                           child: Text('RESET'),

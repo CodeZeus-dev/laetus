@@ -97,7 +97,7 @@ class _ColourComplimentScreenState extends State<ColourComplimentScreen> {
               Container(
                 height: 150,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 35.0),
+                  padding: const EdgeInsets.only(left: 15.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
