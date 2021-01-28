@@ -22,26 +22,15 @@ Map<String, dynamic> changeColour(
     @required int r,
     @required int g,
     @required int b,
-    @required double shiftValue,
     double currentSlideValue}) {
   int medianRGB = findMedian(r: r, g: g, b: b);
 
-  if (currentSlideValue > 40.0) {
-    if (r == medianRGB) {
-      return {'a': a, 'r': r + shiftValue, 'g': g, 'b': b};
-    } else if (g == medianRGB) {
-      return {'a': a, 'r': r, 'g': g + shiftValue, 'b': b};
-    } else if (b == medianRGB) {
-      return {'a': a, 'r': r, 'g': g, 'b': b + shiftValue};
-    }
-  } else if (currentSlideValue < 40.0) {
-    if (r == medianRGB) {
-      return {'a': a, 'r': r - shiftValue, 'g': g, 'b': b};
-    } else if (g == medianRGB) {
-      return {'a': a, 'r': r, 'g': g - shiftValue, 'b': b};
-    } else if (b == medianRGB) {
-      return {'a': a, 'r': r, 'g': g, 'b': b - shiftValue};
-    }
+  if (r == medianRGB) {
+    return {'a': a, 'r': r + currentSlideValue.toInt(), 'g': g, 'b': b};
+  } else if (g == medianRGB) {
+    return {'a': a, 'r': r, 'g': g + currentSlideValue.toInt(), 'b': b};
+  } else if (b == medianRGB) {
+    return {'a': a, 'r': r, 'g': g, 'b': b + currentSlideValue.toInt()};
   }
   return {'a': a, 'r': r, 'g': g, 'b': b};
 }

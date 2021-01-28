@@ -7,6 +7,7 @@ import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
 import '../extract_arguments.dart';
 import '../helpers/rgb_calc.dart';
+import '../helpers/cmyk_calc.dart';
 
 class ColorDetailsScreen extends StatefulWidget {
   static const routeName = '/color/details';
@@ -24,31 +25,42 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   double _currentSliderValue;
   double _currentSliderSimilarValue;
   Map<String, dynamic> _updatedColour;
+  List<dynamic> _updatedColourCMYK;
 
   var _colour;
+  var count = 0;
 
   @override
   Widget build(BuildContext context) {
     final ExtractArguments args = ModalRoute.of(context).settings.arguments;
 
-    getColour(colourHex: colourToHex(args.userColor.toString())).then((colour) {
-      _currentColour = Color.fromRGBO(
-          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-      _changingColour = Color.fromRGBO(
-          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-      _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
-      _currentSliderValue = 100;
-      _currentSliderSimilarValue = 40;
-      _similarColour = Color.fromRGBO(
-          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
+    if (count < 1) {
+      getColour(colourHex: colourToHex(args.userColor.toString()))
+          .then((colour) {
+        _currentColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
+        _changingColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
+        _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
+        _currentSliderValue = 100;
+        _currentSliderSimilarValue = 0;
+        _updatedColourCMYK = [
+          colour['cmyk']['c'],
+          colour['cmyk']['m'],
+          colour['cmyk']['y'],
+          colour['cmyk']['k']
+        ];
+        _similarColour = Color.fromRGBO(
+            colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
 
-      if (_colour != colour) {
-        setState(() {
-          _colour = colour;
-        });
-      }
-    });
-
+        if (_colour != colour) {
+          setState(() {
+            _colour = colour;
+            count++;
+          });
+        }
+      });
+    }
     if (_colour == null) {
       return Scaffold(
         body: Center(
@@ -179,25 +191,25 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             Column(
                               children: <Widget>[
                                 Text(
-                                  _colour['cmyk']['c'].toString(),
+                                  _updatedColourCMYK[0].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['m'].toString(),
+                                  _updatedColourCMYK[1].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['y'].toString(),
+                                  _updatedColourCMYK[2].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['cmyk']['k'].toString(),
+                                  _updatedColourCMYK[3].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -258,19 +270,20 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             Column(
                               children: <Widget>[
                                 Text(
-                                  _colour['rgb']['r'].toString(),
+                                  _updatedColour['r'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['rgb']['g'].toString(),
+                                  _updatedColour['g'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
-                                  _colour['rgb']['b'].toString(),
+                                  // _colour['rgb']['b'].toString(),
+                                  _updatedColour['b'].toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -347,9 +360,9 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                       child: Theme(
                         child: Slider(
                           value: _currentSliderSimilarValue,
-                          min: 0,
-                          max: 81,
-                          // divisions: 82,
+                          min: -60,
+                          max: 60,
+                          divisions: 82,
                           label: _changingColour.toString(),
                           activeColor: _changingColour,
                           onChanged: (double value) {
@@ -360,13 +373,17 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                                   r: _colour['rgb']['r'],
                                   g: _colour['rgb']['g'],
                                   b: _colour['rgb']['b'],
-                                  shiftValue: 1,
-                                  currentSlideValue: _currentSliderSimilarValue);
+                                  currentSlideValue:
+                                      _currentSliderSimilarValue);
                               _changingColour = Color.fromRGBO(
                                   _updatedColour['r'],
                                   _updatedColour['g'],
                                   _updatedColour['b'],
                                   _updatedColour['a']);
+                              _updatedColourCMYK = convertToCmyk(
+                                  _updatedColour['r'],
+                                  _updatedColour['g'],
+                                  _updatedColour['b']);
                             });
                           },
                         ),
@@ -384,7 +401,23 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                             setState(() {
                               _changingColour = _currentColour;
                               _currentSliderValue = 100;
-                              _updatedColour['a'] = 1;
+                              _currentSliderSimilarValue = 0;
+                              _currentColour = Color.fromRGBO(
+                                  _colour['rgb']['r'],
+                                  _colour['rgb']['g'],
+                                  _colour['rgb']['b'],
+                                  1);
+                              _changingColour = Color.fromRGBO(
+                                  _colour['rgb']['r'],
+                                  _colour['rgb']['g'],
+                                  _colour['rgb']['b'],
+                                  1);
+                              _updatedColour = {
+                                'r': 0,
+                                'g': 0,
+                                'b': 255,
+                                'a': 1.0
+                              };
                             });
                           },
                           child: Text('RESET'),
