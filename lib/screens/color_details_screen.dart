@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/color_converter.dart';
 import '../helpers/color_shift.dart';
 import '../helpers/color_retriever.dart';
 import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
 import '../extract_arguments.dart';
+import '../helpers/rgb_calc.dart';
 
 class ColorDetailsScreen extends StatefulWidget {
   static const routeName = '/color/details';
@@ -15,10 +17,12 @@ class ColorDetailsScreen extends StatefulWidget {
 
 class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   Color _currentColour;
+  Color _similarColour;
   Color _changingColour;
   var imageColorInfo;
 
   double _currentSliderValue;
+  double _currentSliderSimilarValue;
   Map<String, dynamic> _updatedColour;
 
   var _colour;
@@ -34,6 +38,9 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
           colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
       _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
       _currentSliderValue = 100;
+      _currentSliderSimilarValue = 40;
+      _similarColour = Color.fromRGBO(
+          colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
 
       if (_colour != colour) {
         setState(() {
@@ -303,7 +310,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                           min: 1,
                           max: 100,
                           divisions: 1000,
-                          label: 'Text',
+                          label: '#${_changingColour.value.toRadixString(16)}',
                           activeColor: _changingColour,
                           onChanged: (double value) {
                             setState(() {
@@ -339,21 +346,22 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                       height: 65,
                       child: Theme(
                         child: Slider(
-                          value: _currentSliderValue,
-                          min: 1,
-                          max: 100,
-                          divisions: 1000,
-                          label: 'Text',
+                          value: _currentSliderSimilarValue,
+                          min: 0,
+                          max: 81,
+                          // divisions: 82,
+                          label: _changingColour.toString(),
                           activeColor: _changingColour,
                           onChanged: (double value) {
                             setState(() {
-                              _currentSliderValue = value;
-                              _updatedColour = shiftColor(
+                              _currentSliderSimilarValue = value;
+                              _updatedColour = changeColour(
                                   a: 1.0,
                                   r: _colour['rgb']['r'],
                                   g: _colour['rgb']['g'],
                                   b: _colour['rgb']['b'],
-                                  shiftValue: _currentSliderValue);
+                                  shiftValue: 1,
+                                  currentSlideValue: _currentSliderSimilarValue);
                               _changingColour = Color.fromRGBO(
                                   _updatedColour['r'],
                                   _updatedColour['g'],
