@@ -1,41 +1,52 @@
-# Final project - Laetus 
+# Laetus 
 
 Our group decided to build a cross platform colour detection app, using a brand new framework and language to try and test ourselves and find out how we would fare being faced with an entirely new set of technologies. 
 
-In terms of a real world application, we could see this being useful for graphic or interior designers, artists, or possibly even colour blind people. 
+In terms of a real world application, we could see this being useful for graphic or interior designers, artists, or possibly even colour blind people.
 
-### How to run
-#### Requirements
-- As we haven't put anything onto either appstore, the only way is to take a copy of the code and use an simulator/emulator.
-- You will also need to download [Flutter](https://flutter.dev/docs/get-started/install) and follow their guides to download Xcode and Android Studio SDK
+## Technologies used
 
-#### Once ready...
-1. Clone this repository 
-- Enter `git clone https://github.com/AdamusBG/laetus.git` in your terminal
-
-2. Enter `flutter pub get` in your terminal while in the upper most directory (Laetus).
-
-3. Open a simulator 
-- for iOS enter `open -a Simulator` in your terminal
-- for Android open through the Android Studio application
-
-4. Enter `flutter run` in your terminal
- 
-
-### Technologies used
 Area | Technology
 ---- | ----
 Framework | Flutter
 Language | Dart
 Emulators | Xcode, Android Studio
 
+## Team Laetus
 
-### Planning
-Given the teams on Monday morning and being asked to present an MVP on Wednesday, we put together a basic plan to begin with, and came back to this on Wednesday to confirm where we were going. We started by considering what features would be considered useful in a colour detection app, and came to the agreement that there was a huge amount of potential features and so would start with the basics, returning the colour with its CYMK and RGB values, then adding the option for opacity, and giving the user a few complimentary colours, as well as the most dominant colours in the image.
-
-### Team Laetus
 [Malachi Spencer](https://github.com/malachispencer)  
 [Constantine Akritides](https://github.com/CodeZeus-dev)  
 [Adam Grieve](https://github.com/AdamusBG)  
-[Chris Walsh](https://github.com/Walshy92) 
+[Chris Walsh](https://github.com/Walshy92)
+
+## How to run
+
+1) You will also need to download [Flutter](https://flutter.dev/docs/get-started/install) and follow their guides to download Xcode and Android Studio SDK.
+
+1) Clone this repository by entering `git clone https://github.com/AdamusBG/laetus.git` in your terminal.
+
+2) Ensure you are in the root of the project.
+
+2) Enter `flutter pub get` in your terminal to install dependencies.
+
+3) Open a simulator using `open -a Simulator`- for iOS, for Android open using Android Studio or VS Code.
+
+4. Enter `flutter run` in your terminal.
+
+## Our Planning
+
+Given the teams on Monday morning and being asked to present an MVP on Wednesday, we put together a basic plan to begin with, and came back to this on Wednesday to confirm where we were going. We started by considering what features would be considered useful in a colour detection app, and came to the agreement that there was a huge amount of potential features and so would start with the basics, returning the colour with its CYMK and RGB values, then adding the option for opacity, and giving the user a few complimentary colours, as well as the most dominant colours in the image.
+
+### Team Charter
+
+https://docs.google.com/document/d/1RnOr0awjc4LpD98YUPErnUY3cdRZxF7SqVAu1hc9D5I/edit
+
+## Diagrams
+
+## Loading Image From Camera/Gallery
+
+![Screenshot 2021-01-22 at 11 55 38](https://user-images.githubusercontent.com/71923215/106179011-5c80da80-6192-11eb-8e71-7e1befee0f07.png)
+
+
+
 
