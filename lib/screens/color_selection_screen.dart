@@ -75,27 +75,34 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Laetus"),
-        backgroundColor: Colors.blueGrey,
+        title: Image.asset(
+          'assets/images/LAETUS_LOGO.png',
+          width: 120,
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white,
       ),
       body: Center(
         child: Stack(
           children: <Widget>[
-            ImagePixels(
-                imageProvider: _image == null ? sampleImage : FileImage(_image),
-                builder: (BuildContext context, ImgDetails img) {
-                  return GestureDetector(
-                    child: _image == null
-                        ? Image(image: sampleImage)
-                        : Image.file(_image),
-                    onPanUpdate: (DragUpdateDetails details) {
-                      _screenTouched(details, img, context.findRenderObject());
-                    },
-                    onTapDown: (TapDownDetails details) {
-                      _screenTouched(details, img, context.findRenderObject());
-                    },
-                  );
-                }),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 60.0),
+              child: ImagePixels(
+                  imageProvider: _image == null ? sampleImage : FileImage(_image),
+                  builder: (BuildContext context, ImgDetails img) {
+                    return GestureDetector(
+                      child: _image == null
+                          ? Image(image: sampleImage)
+                          : Image.file(_image),
+                      onPanUpdate: (DragUpdateDetails details) {
+                        _screenTouched(details, img, context.findRenderObject());
+                      },
+                      onTapDown: (TapDownDetails details) {
+                        _screenTouched(details, img, context.findRenderObject());
+                      },
+                    );
+                  }),
+            ),
             dropper
           ],
         ),

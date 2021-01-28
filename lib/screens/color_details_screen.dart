@@ -57,7 +57,13 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
           width: 120,
         ),
         backgroundColor: Colors.white,
-        shadowColor: Colors.transparent,
+        shadowColor: Colors.white,
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_sharp),
+          color: Colors.black,
+          onPressed: () => Navigator.pop(context, false),
+        ),
       ),
       body: Container(
         color: Colors.white,
