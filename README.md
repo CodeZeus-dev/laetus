@@ -1,4 +1,6 @@
-# Laetus 
+# Laetus
+
+## About
 
 Our group decided to build a cross platform colour detection app, using a brand new framework and language to try and test ourselves and find out how we would fare being faced with an entirely new set of technologies. 
 
@@ -19,27 +21,27 @@ Emulators | Xcode, Android Studio
 [Adam Grieve](https://github.com/AdamusBG)  
 [Chris Walsh](https://github.com/Walshy92)
 
-## How to run
+## How To Run
 
 1) You will also need to download [Flutter](https://flutter.dev/docs/get-started/install) and follow their guides to download Xcode and Android Studio SDK.
 
-1) Clone this repository by entering `git clone https://github.com/AdamusBG/laetus.git` in your terminal.
+2) Clone this repository by entering `git clone https://github.com/AdamusBG/laetus.git` in your terminal.
 
-2) Ensure you are in the root of the project.
+3) Ensure you are in the root of the project.
 
-2) Enter `flutter pub get` in your terminal to install dependencies.
+4) Enter `flutter pub get` in your terminal to install dependencies.
 
-3) Open a simulator using `open -a Simulator`- for iOS, for Android open using Android Studio or VS Code.
+5) Open a simulator using `open -a Simulator`- for iOS, for Android open using Android Studio or VS Code.
 
-4. Enter `flutter run` in your terminal.
+6) Enter `flutter run` in your terminal.
 
 ## Our Planning
 
 Given the teams on Monday morning and being asked to present an MVP on Wednesday, we put together a basic plan to begin with, and came back to this on Wednesday to confirm where we were going. We started by considering what features would be considered useful in a colour detection app, and came to the agreement that there was a huge amount of potential features and so would start with the basics, returning the colour with its CYMK and RGB values, then adding the option for opacity, and giving the user a few complimentary colours, as well as the most dominant colours in the image.
 
-### Team Charter
+Check out our planning wiki [here](https://github.com/AdamusBG/laetus/wiki/Planning).
 
-https://docs.google.com/document/d/1RnOr0awjc4LpD98YUPErnUY3cdRZxF7SqVAu1hc9D5I/edit
+Check out our team charter [here](https://docs.google.com/document/d/1RnOr0awjc4LpD98YUPErnUY3cdRZxF7SqVAu1hc9D5I/edit).
 
 ## Diagrams
 
