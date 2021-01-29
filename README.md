@@ -6,6 +6,8 @@ Our group decided to build a cross platform colour detection app, using a brand 
 
 In terms of a real world application, we could see this being useful for graphic or interior designers, artists, or possibly even colour blind people.
 
+Check out [this](https://youtu.be/C5DurMEqJ-Q) demo video showing off the completed application!
+
 ## Technologies used
 
 Area | Technology
