@@ -366,7 +366,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                           value: _currentSliderSimilarValue,
                           min: -60,
                           max: 60,
-                          divisions: 82,
+                          divisions: 87,
                           label: _changingColour.toString(),
                           activeColor: _changingColour,
                           onChanged: (double value) {
@@ -417,9 +417,9 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                                   _colour['rgb']['b'],
                                   1);
                               _updatedColour = {
-                                'r': 0,
-                                'g': 0,
-                                'b': 255,
+                                'r': _colour['rgb']['r'],
+                                'g': _colour['rgb']['g'],
+                                'b': _colour['rgb']['b'],
                                 'a': 1.0
                               };
                             });
