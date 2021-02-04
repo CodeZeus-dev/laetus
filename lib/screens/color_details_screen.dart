@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../helpers/color_converter.dart';
 import '../helpers/color_shift.dart';
 import '../helpers/color_retriever.dart';
-import '../helpers/color_converter.dart';
 import '../color_compliment.dart';
 import '../extract_arguments.dart';
 import '../helpers/rgb_calc.dart';
@@ -41,7 +40,12 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
             colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
         _changingColour = Color.fromRGBO(
             colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-        _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
+        _updatedColour = {
+          'r': colour['rgb']['r'],
+          'g': colour['rgb']['g'],
+          'b': colour['rgb']['b'],
+          'a': 1.0
+        };
         _currentSliderValue = 100;
         _currentSliderSimilarValue = 0;
         _updatedColourCMYK = [
