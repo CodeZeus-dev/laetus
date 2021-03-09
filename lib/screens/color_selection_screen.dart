@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_pixels/image_pixels.dart';
+import 'package:laetus/authentication_service.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -81,6 +83,14 @@ class _ColorSelectionScreenState extends State<ColorSelectionScreen> {
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("Log Out"),
+          ),
+        ],
       ),
       body: Center(
         child: Stack(

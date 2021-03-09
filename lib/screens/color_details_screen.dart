@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:laetus/authentication_service.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/color_converter.dart';
 import '../helpers/color_shift.dart';
@@ -41,7 +43,12 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
             colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
         _changingColour = Color.fromRGBO(
             colour['rgb']['r'], colour['rgb']['g'], colour['rgb']['b'], 1);
-        _updatedColour = {'r': 0, 'g': 0, 'b': 255, 'a': 1.0};
+        _updatedColour = {
+          'r': colour['rgb']['r'],
+          'g': colour['rgb']['g'],
+          'b': colour['rgb']['b'],
+          'a': 1.0,
+        };
         _currentSliderValue = 100;
         _currentSliderSimilarValue = 0;
         _updatedColourCMYK = [
@@ -83,6 +90,14 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
           color: Colors.black,
           onPressed: () => Navigator.pop(context, false),
         ),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("Log Out"),
+          ),
+        ],
       ),
       body: Container(
         color: Colors.white,
@@ -413,10 +428,10 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
                                   _colour['rgb']['b'],
                                   1);
                               _updatedColour = {
-                                'r': 0,
-                                'g': 0,
-                                'b': 255,
-                                'a': 1.0
+                                'r': _colour['rgb']['r'],
+                                'g': _colour['rgb']['g'],
+                                'b': _colour['rgb']['b'],
+                                'a': 1.0,
                               };
                             });
                           },
